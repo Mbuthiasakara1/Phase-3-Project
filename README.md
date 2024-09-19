@@ -1,60 +1,242 @@
-Gym Management CLI Application
-This project is a command-line interface (CLI) application designed to manage gym members and gym classes. It uses SQLAlchemy for database interactions and Click for CLI commands.
+# Gym Management CLI Application
 
-Table of Contents
-CLI Script
-Models
-Functions
-Additional Information
-CLI Script
-cli.py
-This is the main script for the CLI application. It provides commands to interact with the gym database, including managing members and gym classes.
+This CLI application allows you to manage members, gym classes, and instructors in a gym database. It uses Python and SQLAlchemy to interact with a SQLite database (`gym.db`). With this application, you can create, update, delete, and search for members, classes, and instructors through the command line.
 
-Commands:
+## Features
+- **Manage Members**: Add, update, delete, and view gym members.
+- **Manage Classes**: Create, update, delete, and view gym classes.
+- **Manage Instructors**: Add, update, delete, and view instructors.
+- **Relational Database**: Members are linked to gym classes, and gym classes are linked to instructors.
+- **Validation**: Validates member email uniqueness and class and instructor existence before creating new records.
 
-create_member: Prompts for member details (name, age, email, and class id) and adds a new member to the database if the email is not already taken and the class id exists.
-display_members: Lists all members in the database.
-delete_members: Deletes a member by their ID.
-update_member: Updates a member's details (name, age, email) based on their ID.
-find_member_by_id: Finds and displays a member by their ID.
-find_member_by_name: Finds and displays members by their name.
-find_member_by_class_id: Finds and displays members by their class ID.
-create_gym_class: Prompts for gym class details (name and description) and adds a new class to the database.
-display_gym_classes: Lists all gym classes in the database.
-delete_gym_class: Deletes a gym class by its ID.
-update_gym_class: Updates a gym class's details (name, description) based on its ID.
-find_gym_class_by_id: Finds and displays a gym class by its ID.
-find_gym_class_by_name: Finds and displays gym classes by their name.
-Models
-models.py
-This file contains the SQLAlchemy models used in the application. It defines the structure of the database tables and the relationships between them.
+## Setup
 
-Classes:
+### Prerequisites
+- Python 3.7+
+- Pipenv (or `pip` to install dependencies)
 
-Member: Represents a gym member with attributes such as ID, name, age, email, and class ID. It includes constraints for unique email addresses and an index on the name column for optimized queries. It has a foreign key linking it to the Gym_Class model and a relationship to allow access to associated classes.
+### Installation
 
-Attributes:
+1. Clone the repository:
 
-id: Integer, primary key
-name: String
-age: Integer
-email: String, unique
-enrolled_date: DateTime, default to the current date and time
-class_id: Integer, foreign key linking to Gym_Class
-Methods:
+   ```bash
+   git clone https://github.com/Mbuthiasakara1/Phase-3-Project.git
+   ```
 
-__repr__: Provides a string representation of the Member instance.
-Gym_Class: Represents a gym class with attributes such as ID, name, and description. It includes a relationship to the Member model to access members associated with each class.
+2. Navigate to the project directory:
 
-Attributes:
+   ```bash
+   cd gym-cli
+   ```
 
-id: Integer, primary key
-name: String
-description: String
-Methods:
+3. Install dependencies using Pipenv:
 
-__repr__: Provides a string representation of the Gym_Class instance.
-Additional Information
-Database Configuration: The SQLite database is used for storing data, configured in models.py with the URI 'sqlite:///gym.db'.
-Session Management: SQLAlchemy's sessionmaker is used to create and manage database sessions.
-For more detailed instructions on setting up and using this application, refer to the respective command functions in cli.py.
+   ```bash
+   pipenv install
+   ```
+
+   Or use `pip` if you're not using Pipenv:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Initialize the database:
+
+   ```bash
+   python -c "from models import Base, engine; Base.metadata.create_all(engine)"
+   ```
+
+### Running the CLI
+
+Activate the Pipenv shell and run the CLI:
+
+```bash
+pipenv shell
+python cli.py --help
+```
+
+This will display a list of available commands.
+
+## Available Commands
+
+### Member Management
+
+- **Create a Member**:
+  
+  ```bash
+  python cli.py create_member
+  ```
+
+  This will prompt you to enter the member's name, age, email, and class ID.
+
+- **Display Members**:
+
+  ```bash
+  python cli.py display_members
+  ```
+
+  This will list all members in the gym.
+
+- **Update Member**:
+
+  ```bash
+  python cli.py update_member
+  ```
+
+  You will be prompted to enter the member's ID and update their details.
+
+- **Delete Member**:
+
+  ```bash
+  python cli.py delete_member
+  ```
+
+  This deletes a member by their ID.
+
+- **Find Member by ID**:
+
+  ```bash
+  python cli.py find_member_by_id
+  ```
+
+  Finds a specific member by their unique ID.
+
+- **Find Member by Name**:
+
+  ```bash
+  python cli.py find_member_by_name
+  ```
+
+  Finds members by name.
+
+- **Find Members by Class ID**:
+
+  ```bash
+  python cli.py find_member_by_class_id
+  ```
+
+  Finds all members enrolled in a specific class.
+
+### Gym Class Management
+
+- **Create a Gym Class**:
+
+  ```bash
+  python cli.py create_gym_class
+  ```
+
+  This will prompt you to enter the class name, description, and the instructor ID for the class.
+
+- **Display Gym Classes**:
+
+  ```bash
+  python cli.py display_gym_classes
+  ```
+
+  Lists all gym classes.
+
+- **Update Gym Class**:
+
+  ```bash
+  python cli.py update_gym_class
+  ```
+
+  Prompts to update class details by class ID.
+
+- **Delete Gym Class**:
+
+  ```bash
+  python cli.py delete_gym_class
+  ```
+
+  Deletes a class by its ID.
+
+- **Find Gym Class by ID**:
+
+  ```bash
+  python cli.py find_gym_class_by_id
+  ```
+
+  Finds a class by its unique ID.
+
+- **Find Gym Class by Name**:
+
+  ```bash
+  python cli.py find_gym_class_by_name
+  ```
+
+  Finds classes by their name.
+
+### Instructor Management
+
+- **Create an Instructor**:
+
+  ```bash
+  python cli.py create_instructor
+  ```
+
+  Prompts to create an instructor by entering their name and specialty.
+
+- **Display Instructors**:
+
+  ```bash
+  python cli.py display_instructors
+  ```
+
+  Lists all instructors.
+
+- **Update Instructor**:
+
+  ```bash
+  python cli.py update_instructor
+  ```
+
+  Updates an instructor’s details by their ID.
+
+- **Delete Instructor**:
+
+  ```bash
+  python cli.py delete_instructor
+  ```
+
+  Deletes an instructor by their ID.
+
+- **Find Instructor by ID**:
+
+  ```bash
+  python cli.py find_instructor_by_id
+  ```
+
+  Finds an instructor by their unique ID.
+
+- **Find Instructor by Name**:
+
+  ```bash
+  python cli.py find_instructor_by_name
+  ```
+
+  Finds instructors by their name.
+
+## Code Overview
+
+### Models (`models.py`)
+
+- **Member**: Represents a gym member. Each member has a unique email and is linked to a gym class.
+  
+- **Gym_Class**: Represents a gym class. Each class has a name, description, and is linked to an instructor.
+
+- **Instructor**: Represents an instructor. Instructors have a name and a specialty (e.g., Yoga, Pilates).
+
+### CLI Commands (`cli.py`)
+
+Each function in `cli.py` corresponds to a command that you can execute from the command line. For example, `create_member` adds a new member, and `update_member` allows updating member information. The `click` module is used for handling command-line interactions.
+
+## How to Contribute
+
+1. Fork the project.
+2. Create a new feature branch (`git checkout -b feature-branch`).
+3. Commit your changes (`git commit -m 'Add feature'`).
+4. Push to the branch (`git push origin feature-branch`).
+5. Create a new Pull Request.
+
